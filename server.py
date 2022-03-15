@@ -21,8 +21,9 @@ def create_app():
     import models.model as app_model
     app_model.Base.metadata.create_all(bind=engine)
     from modules.dependency import is_auth
-    from handlers import todo
+    from handlers import todo,sse
     app.include_router(todo.router, dependencies=[Depends(is_auth)])
+    app.include_router(sse.router)
     logging.basicConfig(
         format='Server:{levelname:7} {message}', style='{', level=logging.DEBUG)
     
