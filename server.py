@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.logger import logger
 import logging
+from handlers import chat
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import os.path as op
@@ -21,9 +22,9 @@ def create_app():
     import models.model as app_model
     app_model.Base.metadata.create_all(bind=engine)
     from modules.dependency import is_auth
-    from handlers import todo,sse
+    from handlers import todo,chat
     app.include_router(todo.router, dependencies=[Depends(is_auth)])
-    app.include_router(sse.router)
+    app.include_router(chat.router)
     logging.basicConfig(
         format='Server:{levelname:7} {message}', style='{', level=logging.DEBUG)
     
@@ -40,4 +41,5 @@ def create_app():
     return app
 
 app = create_app()
+
 
